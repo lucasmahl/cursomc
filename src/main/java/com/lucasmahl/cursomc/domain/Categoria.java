@@ -2,8 +2,17 @@ package com.lucasmahl.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity //do JPA, pra criar a tabela
 public class Categoria implements Serializable {//Serializable faz com q os objetos da classe virem bytes, pra armazenamento e etc.
 	private static final long serialVersionUID = 1L;
+	
+	@Id //JPA
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 
