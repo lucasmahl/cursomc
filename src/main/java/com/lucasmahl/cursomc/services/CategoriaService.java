@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.lucasmahl.cursomc.domain.Categoria;
 import com.lucasmahl.cursomc.repositories.CategoriaRepository;
 
+//REGRAS DE NEGOCIO
 @Service
 public class CategoriaService {
 	@Autowired //vai ser automaticamente instanciada pelo spring
