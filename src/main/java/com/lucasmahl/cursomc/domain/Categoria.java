@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity //do JPA, pra criar a tabela
 public class Categoria implements Serializable {//Serializable faz com q os objetos da classe virem bytes, pra armazenamento e etc.
 	private static final long serialVersionUID = 1L;
@@ -19,6 +21,7 @@ public class Categoria implements Serializable {//Serializable faz com q os obje
 	private Integer id;
 	private String nome;
 
+	@JsonManagedReference //pra evitar o loop infinito do ManyToMany
 	@ManyToMany(mappedBy = "categorias")//não será necessário fazer todo o mapeamento
 	private List<Produto> produtos = new ArrayList<>();//Produtos pq é o nome do papel no UML
 	

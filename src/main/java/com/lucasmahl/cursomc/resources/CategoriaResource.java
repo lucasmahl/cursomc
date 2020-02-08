@@ -23,8 +23,10 @@ public class CategoriaResource {
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
 		//? pq pode ser qualquer tipo, até nulo
 		
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.find(id);
 		
 		return ResponseEntity.ok().body(obj);
+		
+		//handler, caso de erro de exceção
 	}
 }
