@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity //do JPA, pra criar a tabela
 public class Estado implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -19,6 +21,7 @@ public class Estado implements Serializable{
 	private Integer id;
 	private String nome;
 
+	@JsonBackReference //pra evitar o loop infinito
 	@OneToMany(mappedBy = "estado")//mappedby é o atributo q foi mapeado do outro lado
 	private List<Cidade> cidades = new ArrayList<>();
 

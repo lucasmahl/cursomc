@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasmahl.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -28,7 +29,8 @@ public class Cliente implements Serializable{
 	private String cpfOuCnpj;
 	private Integer tipo;// TipoCliente
 
-	@OneToMany(mappedBy = "cliente")//mapped é a variavel do outro lado	
+	@JsonManagedReference //pra evitar o loop infinito
+	@OneToMany(mappedBy = "cliente")//mappedby é a variavel do outro lado	
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection //por ser entidade fraca
