@@ -8,28 +8,35 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-@Entity //do JPA, pra criar a tabela
-public class Categoria implements Serializable {//Serializable faz com q os objetos da classe virem bytes, pra armazenamento e etc.
+@Entity //entidade do jpa
+public class Produto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id //JPA
+	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-
-	@ManyToMany(mappedBy = "categorias")//não será necessário fazer todo o mapeamento
-	private List<Produto> produtos = new ArrayList<>();//Produtos pq é o nome do papel no UML
+	private Double preco;
 	
-	public Categoria() {
-
+	@ManyToMany //pq tem lista dos dois lados
+	@JoinTable(name="PRODUTO_CATEGORIA", //3ª tabela, auxiliar qndo é manytomany
+					joinColumns = @JoinColumn(name="produto_id"),//nome do campo q vai ser a chave estrangeira na tabela
+					inverseJoinColumns = @JoinColumn(name="categoria_id"))
+	private List<Categoria> categorias = new ArrayList<>();//categorias pq foi o njome indica no uml
+	
+	public Produto() {
+		
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -48,14 +55,22 @@ public class Categoria implements Serializable {//Serializable faz com q os obje
 		this.nome = nome;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
-	
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -72,12 +87,12 @@ public class Categoria implements Serializable {//Serializable faz com q os obje
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
+	}	
 }
