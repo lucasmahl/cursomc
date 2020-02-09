@@ -31,7 +31,7 @@ public class Endereco implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="cidade_id")//cidade_id é o nome do campo de chave estrangeira da tabela Endereco
-	private Cidade cidade;
+	private Cidade cidade;//Na classe Cidade não tem associação pq é direcional
 
 	public Endereco() {
 

@@ -12,30 +12,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasmahl.cursomc.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente implements Serializable{
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id //JPA
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+
+	@Id // JPA
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;// TipoCliente
 
-	@JsonManagedReference //pra evitar o loop infinito
-	@OneToMany(mappedBy = "cliente")//mappedby é a variavel do outro lado	
+	@JsonManagedReference // pra evitar o loop infinito
+	@OneToMany(mappedBy = "cliente") // mappedby é a variavel do outro lado
 	private List<Endereco> enderecos = new ArrayList<>();
 
-	@ElementCollection //por ser entidade fraca
-	@CollectionTable(name = "TELEFONE") //nome da tabela auxiliar, pra guardar os telefones
+	@ElementCollection // por ser entidade fraca
+	@CollectionTable(name = "TELEFONE") // nome da tabela auxiliar, pra guardar os telefones
 	private Set<String> telefones = new HashSet<>();// Set é conjunto q não aceita repetição, <<entidade fraca>>
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
 
@@ -104,6 +108,14 @@ public class Cliente implements Serializable{
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
