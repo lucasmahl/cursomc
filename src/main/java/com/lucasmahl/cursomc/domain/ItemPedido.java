@@ -5,11 +5,14 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //clase de associação
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore //pra evitar loop infinito, não será serializado, @JsonIgnore pq é chave composta e são 2 níveis de acesso
 	@EmbeddedId// @EmbeddedId por ser um id embutido em um tipo auxiliar
 	private ItemPedidoPK id = new ItemPedidoPK(); //ItemPedidoPK é clase auxiliar, id é chave composta
 	
@@ -30,10 +33,12 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 	}
 	
+	@JsonIgnore //pra evitar loop da referencia ciclica
 	public Pedido getPedido() {
 		return id.getPedido();		
 	}
 	
+	//@JsonIgnore //pra evitar loop da referencia ciclica
 	public Produto getProduto() {
 		return id.getProduto();		
 	}
