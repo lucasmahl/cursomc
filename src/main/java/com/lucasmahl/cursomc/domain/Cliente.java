@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucasmahl.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -30,7 +29,7 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipo;// TipoCliente
 
-	@JsonManagedReference // pra evitar o loop infinito
+	//@JsonManagedReference // pra evitar o loop infinito
 	@OneToMany(mappedBy = "cliente") // mappedby é a variavel do outro lado
 	private List<Endereco> enderecos = new ArrayList<>();
 
@@ -38,7 +37,7 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "TELEFONE") // nome da tabela auxiliar, pra guardar os telefones
 	private Set<String> telefones = new HashSet<>();// Set é conjunto q não aceita repetição, <<entidade fraca>>
 
-	@JsonBackReference //pra evitar loop infinito, e pedidos não serão serializados
+	@JsonIgnore //pra evitar loop infinito, e pedidos não serão serializados
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 

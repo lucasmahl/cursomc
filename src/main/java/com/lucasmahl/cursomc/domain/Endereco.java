@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable{
@@ -24,7 +24,7 @@ public class Endereco implements Serializable{
 	private String bairro;
 	private String cep;
 
-	@JsonBackReference //pra evitar loop do Cliente
+	@JsonIgnore //pra evitar loop do Cliente
 	@ManyToOne
 	@JoinColumn(name="cliente_id")//cliente_id é o nome do campo de chave estrangeira da tabela Endereco
 	private Cliente cliente;

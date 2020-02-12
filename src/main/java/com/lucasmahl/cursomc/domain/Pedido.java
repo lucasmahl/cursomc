@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable{
@@ -28,11 +27,11 @@ public class Pedido implements Serializable{
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm") //pra mostrar data formatadas
 	private Date instante;
 	
-	@JsonManagedReference //pra evitar o loop infinito, pagamento será serializado
+	//@JsonManagedReference //pra evitar o loop infinito, pagamento será serializado
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")//pra evitar erro de entidade transite qndo for salvar pedido e o pagamento dele (JPA)
 	private Pagamento pagamento;
 
-	@JsonManagedReference //pra evitar o loop infinito
+	//@JsonManagedReference //pra evitar o loop infinito
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;

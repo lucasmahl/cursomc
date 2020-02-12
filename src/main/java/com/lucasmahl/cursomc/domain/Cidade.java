@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity //do JPA, pra criar a tabela
 public class Cidade implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -20,7 +18,7 @@ public class Cidade implements Serializable{
 	private Integer id;
 	private String nome;
 
-	@JsonManagedReference //pra evitar o loop infinito
+	//@JsonManagedReference //pra evitar o loop infinito
 	@ManyToOne
 	@JoinColumn(name="estado_id")//estado_id é o nome do campo de chave estrangeira da tabela Cidade
 	private Estado estado;

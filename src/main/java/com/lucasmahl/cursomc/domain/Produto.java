@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity //entidade do jpa
@@ -28,7 +27,7 @@ public class Produto implements Serializable{
 	private String nome;
 	private Double preco;
 	
-	@JsonBackReference //pra evitar o loop infinito, ele vai omitir a lista Categorias pra cada produto, pq já foi buscada
+	@JsonIgnore //pra evitar o loop infinito, ele vai omitir a lista Categorias pra cada produto, pq já foi buscada
 	@ManyToMany //pq tem lista dos dois lados
 	@JoinTable(name="PRODUTO_CATEGORIA", //3ª tabela, auxiliar qndo é manytomany
 					joinColumns = @JoinColumn(name="produto_id"),//nome do campo q vai ser a chave estrangeira na tabela
