@@ -1,11 +1,15 @@
 package com.lucasmahl.cursomc.resources;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasmahl.cursomc.domain.Categoria;
 import com.lucasmahl.cursomc.services.CategoriaService;
@@ -26,7 +30,17 @@ public class CategoriaResource {
 		Categoria obj = service.find(id);
 		
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	//metodo pra receber categoria em json e inseri-la no banco
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody Categoria obj){//pra construir a categoria através do json
+		obj = service.insert(obj);//tem "obj =" pq save do repository retorna obj
 		
-		//handler, caso de erro de exceção
+		//uri de resposta
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")//fromCurrentRequest pega url q foi usada pra inserir
+				.buildAndExpand(obj.getId()).toUri();//buildAndExpand pra atribuir valor
+		
+		return ResponseEntity.created(uri).build();//created gera o cód 201, de criação q foi feita com sucesso		
 	}
 }
