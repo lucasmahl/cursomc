@@ -19,9 +19,9 @@ public class ClienteResource {
 	private ClienteService service;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // verbo http
-	public ResponseEntity<?> find(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
+	public ResponseEntity<Cliente> find(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
-		//? pq pode ser qualquer tipo, até nulo
+		//ResponseEntity<?> pq pode ser qualquer tipo, até nulo
 		
 		Cliente obj = service.find(id);
 		
