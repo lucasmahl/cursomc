@@ -3,10 +3,12 @@ package com.lucasmahl.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.lucasmahl.cursomc.domain.Categoria;
 import com.lucasmahl.cursomc.repositories.CategoriaRepository;
+import com.lucasmahl.cursomc.services.exceptions.DataIntegrityException;
 import com.lucasmahl.cursomc.services.exceptions.ObjectNotFoundException;
 
 //REGRAS DE NEGOCIO
@@ -34,6 +36,19 @@ public class CategoriaService {
 		
 		//metodo save igual ao de inserir, porém como tem id != nulo, igual acima, então atualizada
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id); //caso o id não exista, dispara a exceção feita acima, no find (boas praticas)
+		
+		
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			//lança exceção personalizada, ao deletar Categoria, caso ela tenha dependencias associadas, como Produtos
+			throw new DataIntegrityException("Não é possível excluir Categoria "+id+", pois possui produtos associados");
+		}
+		
 	}
 
 }

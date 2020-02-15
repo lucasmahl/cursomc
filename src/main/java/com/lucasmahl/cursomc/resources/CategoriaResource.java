@@ -22,7 +22,7 @@ public class CategoriaResource {
 	@Autowired //pra instanciar automaticamente pelo spring
 	private CategoriaService service;
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // verbo http
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // GET, verbo http
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
 		//ResponseEntity<?> pq pode ser qualquer tipo, até nulo
@@ -52,5 +52,15 @@ public class CategoriaResource {
 		obj = service.update(obj);
 		
 		return ResponseEntity.noContent().build(); //nocontent = conteudo vazio
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) // DELETE, verbo http
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
+		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
+		//ResponseEntity<?> pq pode ser qualquer tipo, até nulo
+		
+		service.delete(id);
+		
+		return ResponseEntity.noContent().build(); //se deletou com sucesso, retorna a resposta, q deu ok, sem conteúdo
 	}
 }

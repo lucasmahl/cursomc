@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.lucasmahl.cursomc.services.exceptions.DataIntegrityException;
 import com.lucasmahl.cursomc.services.exceptions.ObjectNotFoundException;
 
 //handler q faz o tratamento de exceções
@@ -17,5 +18,13 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandartError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request){//(exceção, info da requisição)
 		StandartError err = new StandartError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis()); //objeto não encontrado
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
+	@ExceptionHandler(DataIntegrityException.class)//pra indicar q é um tratador de exceção do tipo DataIntegrityException
+	//Em "dataIntegrity", pode ser qualeur nome
+	public ResponseEntity<StandartError> dataIntegrity(DataIntegrityException e, HttpServletRequest request){//(exceção, info da requisição)
+		StandartError err = new StandartError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis()); //objeto possui dependentes
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 }
