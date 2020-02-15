@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -75,6 +77,21 @@ public class CategoriaResource {
 		List<Categoria> list = service.findAll(); //função do service
 		List<CategoriaDTO> listDTO = list.stream().map(obj->new CategoriaDTO(obj))//map faz uma operação pra cada elemento da lista
 									.collect(Collectors.toList());//volta stream pra lista
+		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@RequestMapping(value = "/page", method = RequestMethod.GET) // GET, verbo http //value = http://localhost:8080/categorias/page
+	public ResponseEntity<Page<CategoriaDTO>> findPage(
+			@RequestParam(value = "page", defaultValue = "0")Integer page,//RequestParam pq é um parametro opcional
+			@RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
+			@RequestParam(value = "orderBy", defaultValue = "nome")String orderBy,//ordenado por nome
+			@RequestParam(value = "direction", defaultValue = "ASC")String direction) {
+		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
+		//ResponseEntity<?> pq pode ser qualquer tipo, até nulo
+		
+		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction); //função do service
+		Page<CategoriaDTO> listDTO = list.map(obj->new CategoriaDTO(obj)); //map faz uma operação pra cada elemento da lista
+		
 		return ResponseEntity.ok().body(listDTO);
 	}
 }
