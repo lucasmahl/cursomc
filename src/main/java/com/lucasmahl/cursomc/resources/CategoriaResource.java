@@ -1,6 +1,8 @@
 package com.lucasmahl.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasmahl.cursomc.domain.Categoria;
+import com.lucasmahl.cursomc.dto.CategoriaDTO;
 import com.lucasmahl.cursomc.services.CategoriaService;
 
 //Resource pq é um controlador Rest
@@ -62,5 +65,16 @@ public class CategoriaResource {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build(); //se deletou com sucesso, retorna a resposta, q deu ok, sem conteúdo
+	}
+	
+	@RequestMapping(method = RequestMethod.GET) // GET, verbo http
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
+		//ResponseEntity<?> pq pode ser qualquer tipo, até nulo
+		
+		List<Categoria> list = service.findAll(); //função do service
+		List<CategoriaDTO> listDTO = list.stream().map(obj->new CategoriaDTO(obj))//map faz uma operação pra cada elemento da lista
+									.collect(Collectors.toList());//volta stream pra lista
+		return ResponseEntity.ok().body(listDTO);
 	}
 }
