@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.lucasmahl.cursomc.domain.Categoria;
+import com.lucasmahl.cursomc.dto.CategoriaDTO;
 import com.lucasmahl.cursomc.repositories.CategoriaRepository;
 import com.lucasmahl.cursomc.services.exceptions.DataIntegrityException;
 import com.lucasmahl.cursomc.services.exceptions.ObjectNotFoundException;
@@ -64,6 +65,11 @@ public class CategoriaService {
 		
 		return repo.findAll(pageRequest);
 		
+	}
+	
+	//metodo auxiliar pra conversao de dto
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());	
 	}
 
 }

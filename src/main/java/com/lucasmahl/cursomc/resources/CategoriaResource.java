@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,8 @@ public class CategoriaResource {
 	
 	//metodo pra receber categoria em json e inseri-la no banco
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){//@RequestBody pra construir a categoria através do json
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){//@RequestBody pra construir a categoria através do json //@Valid pra q o objDTO seja validado antes
+		Categoria obj = service.fromDTO(objDTO);//converte o CategoriaDTO pra Categoria
 		obj = service.insert(obj);//tem "obj =" pq save do repository retorna obj
 		
 		//uri de resposta, retorna a uri q foi salva, tipo: http://localhost:8080/categorias/3
@@ -51,7 +54,9 @@ public class CategoriaResource {
 	
 	//pra fazer alteração
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)//pathvariable abaixo pq tmbm vai receber parametro da url
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){//@RequestBody pra construir a categoria através do json,
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){//@RequestBody pra construir a categoria através do json passado, @Valid pra validar o objDTO
+		Categoria obj = service.fromDTO(objDTO);//converte
+		
 		obj.setId(id);//por garantia, iguala com o id q foi recebido (boa pratica)
 		
 		obj = service.update(obj);
