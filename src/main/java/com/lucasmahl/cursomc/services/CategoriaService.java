@@ -37,10 +37,12 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());//confere se id realmente existe, pra atualizar
+		Categoria newObj = find(obj.getId());//confere se id realmente existe, pra atualizar
 		
-		//metodo save igual ao de inserir, porém como tem id != nulo, igual acima, então atualizada
-		return repo.save(obj);
+		updateData(newObj, obj);
+		
+		//metodo save igual ao de inserir, porém como tem id != nulo, diferente do insert acima, então apenas atualiza
+		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) {
@@ -71,5 +73,10 @@ public class CategoriaService {
 	public Categoria fromDTO(CategoriaDTO objDTO) {
 		return new Categoria(objDTO.getId(), objDTO.getNome());	
 	}
+	
+	//vai ser private pq é u metódo auxiliar desta mesma classe
+		private void updateData(Categoria newObj, Categoria obj) {
+			newObj.setNome(obj.getNome());
+		}
 
 }

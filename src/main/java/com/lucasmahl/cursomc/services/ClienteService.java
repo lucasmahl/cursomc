@@ -41,7 +41,7 @@ public class ClienteService {
 		
 		updateData(newObj, obj);
 		
-		//metodo save igual ao de inserir, porém como tem id != nulo, igual acima, então atualizada
+		//metodo save igual ao de inserir, porém como tem id != nulo, diferente do insert acima, então atualiza
 		return repo.save(newObj);
 	}
 	
