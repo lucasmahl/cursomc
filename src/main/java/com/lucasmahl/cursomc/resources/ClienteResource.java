@@ -1,5 +1,6 @@
 package com.lucasmahl.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasmahl.cursomc.domain.Cliente;
 import com.lucasmahl.cursomc.dto.ClienteDTO;
+import com.lucasmahl.cursomc.dto.ClienteNewDTO;
 import com.lucasmahl.cursomc.services.ClienteService;
 
 //Resource pq é um controlador Rest
@@ -37,6 +40,19 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 
 	}
+	
+	//metodo pra receber categoria em json e inseri-la no banco
+		@RequestMapping(method=RequestMethod.POST)
+		public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){//@RequestBody pra construir a categoria através do json //@Valid pra q o objDTO seja validado antes
+			Cliente obj = service.fromDTO(objDTO);//converte o CategoriaDTO pra Categoria
+			obj = service.insert(obj);//tem "obj =" pq save do repository retorna obj
+			
+			//uri de resposta, retorna a uri q foi salva, tipo: http://localhost:8080/categorias/3
+			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")//fromCurrentRequest pega url q foi usada pra inserir
+					.buildAndExpand(obj.getId()).toUri();//buildAndExpand pra atribuir valor
+			
+			return ResponseEntity.created(uri).build();//created gera o cód 201, de criação q foi feita com sucesso		
+		}
 	
 	//pra fazer alteração
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)//pathvariable abaixo pq tmbm vai receber parametro da url
