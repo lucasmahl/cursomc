@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ public class Cliente implements Serializable {
 	private Integer tipo;// TipoCliente
 
 	//@JsonManagedReference // pra evitar o loop infinito
-	@OneToMany(mappedBy = "cliente") // mappedby é a variavel do outro lado
+	@OneToMany(mappedBy = "cliente" , cascade = CascadeType.ALL) // mappedby é a variavel do outro lado //"CascadeType.ALL" modifica os enderecos, em cascata, ao modificar o cliente
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection // por ser entidade fraca
