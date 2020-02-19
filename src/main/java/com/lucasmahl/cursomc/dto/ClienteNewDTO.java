@@ -2,23 +2,49 @@ package com.lucasmahl.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
+
+import com.lucasmahl.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// CLIENTE
+	@NotEmpty(message = "Nome é preenchimento obrigatório") //@NotEmpty só se aplica pra String
+	@Length(min=5, max=120, message = "O tamanho deve ser maior que 5 caracteres.")
 	private String nome;
+	
+	@NotEmpty(message = "Email é preenchimento obrigatório") //@NotEmpty só se aplica pra String
+	@Email(message = "Email inválido.")
 	private String email;
+	
+	@NotEmpty(message = "Cpf/Cnpj é preenchimento obrigatório") //@NotEmpty só se aplica pra String
+	@CPF
 	private String cpfOuCnpj;
+	
 	private Integer tipo; // TipoCliente
 
 	// ENDERECO
+	@NotEmpty(message = "Logradour é preenchimento obrigatório") //@NotEmpty só se aplica pra String
 	private String logradouro;
+	
+	@NotEmpty(message = "Número é preenchimento obrigatório") //@NotEmpty só se aplica pra String
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotEmpty(message = "Cep é preenchimento obrigatório") //@NotEmpty só se aplica pra String
 	private String cep;
 
 	// TELEFONE
+	@NotEmpty(message = "Telefone1 é preenchimento obrigatório") //@NotEmpty só se aplica pra String
 	private String telefone1; // OBRIGATORIO
 	private String telefone2; // OPCIONAL
 	private String telefone3; // OPCIONAL
