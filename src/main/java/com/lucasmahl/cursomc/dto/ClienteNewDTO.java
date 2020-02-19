@@ -6,7 +6,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.br.CPF;
 
 import com.lucasmahl.cursomc.services.validation.ClienteInsert;
 
@@ -24,7 +23,6 @@ public class ClienteNewDTO implements Serializable {
 	private String email;
 	
 	@NotEmpty(message = "Cpf/Cnpj é preenchimento obrigatório") //@NotEmpty só se aplica pra String
-	@CPF
 	private String cpfOuCnpj;
 	
 	private Integer tipo; // TipoCliente
