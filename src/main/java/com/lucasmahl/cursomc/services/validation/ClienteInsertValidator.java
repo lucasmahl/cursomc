@@ -6,13 +6,20 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lucasmahl.cursomc.domain.Cliente;
 import com.lucasmahl.cursomc.domain.enums.TipoCliente;
 import com.lucasmahl.cursomc.dto.ClienteNewDTO;
+import com.lucasmahl.cursomc.repositories.ClienteRepository;
 import com.lucasmahl.cursomc.resources.exception.FieldMessage;
 import com.lucasmahl.cursomc.services.validation.utils.BR;
 
 //ConstraintValidator<"nome da anotação", "tipo da classe q vai aceitar a anotação">
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+	
+	@Autowired
+	private ClienteRepository repo;
 	
 	@Override
 	public void initialize(ClienteInsert ann) {
@@ -31,6 +38,12 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 			list.add(new FieldMessage("CpfOuCnpj", "CNPJ inválido."));
 		}
 
+		//testa se email do cliente já existe
+		Cliente aux = repo.findByEmail(objDto.getEmail());
+		if (aux != null) {
+			list.add(new FieldMessage("email", "E-mail já existe no banco."));
+		}
+		
 		//for do framework q transofrma a lista de fieldmessage em objeto pra leitura
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
