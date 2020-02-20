@@ -14,7 +14,7 @@ import com.lucasmahl.cursomc.dto.ClienteNewDTO;
 import com.lucasmahl.cursomc.repositories.ClienteRepository;
 import com.lucasmahl.cursomc.resources.exception.FieldMessage;
 import com.lucasmahl.cursomc.services.validation.utils.BR;
-
+//CLASSE Q É O VALIDATOR PRA CLASSE DE ANOTAÇÃO ClienteInsert
 //ConstraintValidator<"nome da anotação", "tipo da classe q vai aceitar a anotação">
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 	

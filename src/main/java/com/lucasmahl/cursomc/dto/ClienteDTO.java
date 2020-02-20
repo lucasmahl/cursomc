@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.lucasmahl.cursomc.domain.Cliente;
+import com.lucasmahl.cursomc.services.validation.ClienteUpdate;
 
+@ClienteUpdate // pra verificar se existe outro id, com o mesmo e-mail, ao alterar email
 public class ClienteDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
