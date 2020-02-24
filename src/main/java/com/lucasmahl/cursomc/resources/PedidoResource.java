@@ -1,11 +1,17 @@
 package com.lucasmahl.cursomc.resources;
 
+import java.net.URI;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasmahl.cursomc.domain.Pedido;
 import com.lucasmahl.cursomc.services.PedidoService;
@@ -27,5 +33,17 @@ public class PedidoResource {
 		
 		return ResponseEntity.ok().body(obj);
 
+	}
+	
+	//metodo pra receber pedido em json e inseri-la no banco
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj){//@RequestBody pra construir a pedido através do json //@Valid pra q o obj seja validado antes
+		obj = service.insert(obj);//tem "obj =" pq save do repository retorna obj
+		
+		//uri de resposta, retorna a uri q foi salva, tipo: http://localhost:8080/categorias/3
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")//fromCurrentRequest pega uri q foi usada pra inserir
+				.buildAndExpand(obj.getId()).toUri();//buildAndExpand pra atribuir valor
+		
+		return ResponseEntity.created(uri).build();//created gera o cód 201, de criação q foi feita com sucesso		
 	}
 }

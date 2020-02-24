@@ -11,10 +11,12 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.lucasmahl.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)//por causa das heranças//joined é uma tabela pra cada e sigle_table é um tabelão só
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")//a clsse Pagamento terá um campo adicional q chama @type
 public abstract class Pagamento implements Serializable { //abstract pra garantir q não será instanciado bjets do tipo pagamento
 	private static final long serialVersionUID = 1L;
 
