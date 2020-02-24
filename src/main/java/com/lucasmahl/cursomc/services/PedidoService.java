@@ -33,6 +33,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private ClienteService clienteService;
 
 	//busca Pedido pelo Id, e retorna exceção caso ele não exista
 	public Pedido find(Integer id) {
@@ -45,6 +48,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);//pra garantir q realmente está sendo inserido um novo pedido
 		obj.setInstante(new Date());
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj); //pagamento tem q conhecer seu pedido
 		
@@ -59,11 +63,13 @@ public class PedidoService {
 		
 		for (ItemPedido ip: obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco( produtoService.find(ip.getProduto().getId()).getPreco() );//copia o preco do produto
+			ip.setProduto( produtoService.find(ip.getProduto().getId()) );
+			ip.setPreco( ip.getProduto().getPreco() );//copia o preco do produto
 			ip.setPedido(obj); //associa o tem de pedido, com pedido q está sendo inserido
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens()); //repository é capaz de salvar uma lista
+		System.out.println(obj);
 		return obj;
 	}
 }
