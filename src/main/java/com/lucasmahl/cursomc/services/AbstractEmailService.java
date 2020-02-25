@@ -15,15 +15,15 @@ public abstract class AbstractEmailService implements EmailService{
 	
 	@Override
 	public void sendOrderConfirmationEmail(Pedido obj) {
-		SimpleMailMessage sm = prepareSimpleMailMessage(obj);
+		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
 
 	//protected pq pode ser acessado por subclasses, mas não por usuários da classe (controladores de serviços)
-	protected SimpleMailMessage prepareSimpleMailMessage(Pedido obj) {
+	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(obj.getCliente().getEmail());
+		sm.setTo(obj.getCliente().getEmail());//destinatario
 		sm.setFrom(sender);//email padrão da aplicação (application.properties)
 		sm.setSubject("Pedido confirmado! Código: " + obj.getId()); //Assunto
 		sm.setSentDate(new Date(System.currentTimeMillis())); //pra garantir q a data será do meu servidor

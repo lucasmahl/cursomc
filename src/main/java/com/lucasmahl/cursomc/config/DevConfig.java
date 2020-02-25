@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.lucasmahl.cursomc.services.DBService;
+import com.lucasmahl.cursomc.services.EmailService;
+import com.lucasmahl.cursomc.services.SmtpEmailService;
 
 @Configuration //@Configuration pq é um arquivo de configuração
 @Profile("dev") //pra indicar q é especifica do profile de teste
@@ -29,5 +31,10 @@ public class DevConfig {
 		dbService.instantiateTestDataBase();
 		
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
