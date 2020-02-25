@@ -31,7 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// links q estarão liberados somente leitura
 		private static final String[] PUBLIC_MATCHERS_GET = { 
 				"/produtos/**",
-				"/categorias/**" 
+				"/categorias/**",
+				"/clientes/**" 
 		};
 
 	@Override

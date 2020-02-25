@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucasmahl.cursomc.domain.enums.Perfil;
 import com.lucasmahl.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -42,12 +45,16 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "TELEFONE") // nome da tabela auxiliar, pra guardar os telefones
 	private Set<String> telefones = new HashSet<>();// Set é conjunto q não aceita repetição, <<entidade fraca>>
 
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();//guarda no banco só número iteiro, depois converte
+	
 	@JsonIgnore //pra evitar loop infinito, e pedidos não serão serializados
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
-
+		addPerfil(Perfil.CLIENTE); //por este padrão já terá perfil de cliente
 	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
@@ -58,6 +65,7 @@ public class Cliente implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = (tipo==null) ? null : tipo.getCod(); //se tipo for null, no update, então permanece o antigo, sem atualizar
 		this.senha = senha;
+		addPerfil(Perfil.CLIENTE); //por este padrão já terá perfil de cliente
 	}
 
 	public Integer getId() {
@@ -131,6 +139,14 @@ public class Cliente implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public Set<Perfil> getPerfis(){
+		return perfis.stream().map(x->Perfil.toEnum(x)).collect(Collectors.toSet());//toSet converte pra conjunto		
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());//codigo pq está armazenando números inteiros
 	}
 
 	@Override
