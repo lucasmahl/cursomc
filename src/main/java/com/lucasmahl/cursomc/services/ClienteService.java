@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,9 @@ public class ClienteService {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	// busca Cliente pelo Id, e retorna exceção caso ele não exista
 	public Cliente find(Integer id) {
@@ -84,13 +88,13 @@ public class ClienteService {
 	
 	//metodo auxiliar pra conversao de dto
 	public Cliente fromDTO(ClienteDTO objDTO) {
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);	
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);	
 	}
 	
 	//sobrecarga do metodo acima
 	public Cliente fromDTO(ClienteNewDTO objDTO) {
 		Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), 
-				TipoCliente.toEnum(objDTO.getTipo()) );
+				TipoCliente.toEnum(objDTO.getTipo()), pe.encode(objDTO.getSenha()) );
 		
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
 		
