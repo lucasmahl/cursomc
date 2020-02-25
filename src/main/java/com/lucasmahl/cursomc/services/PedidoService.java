@@ -36,6 +36,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private EmailService emailService; //procura o bean na classe TestConfig
 
 	//busca Pedido pelo Id, e retorna exceção caso ele não exista
 	public Pedido find(Integer id) {
@@ -69,7 +72,7 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens()); //repository é capaz de salvar uma lista
-		System.out.println(obj);
+		emailService.sendOrderConfirmationEmail(obj); //envia email de confirmação
 		return obj;
 	}
 }
