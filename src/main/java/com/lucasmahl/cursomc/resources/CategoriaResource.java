@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ public class CategoriaResource {
 	}
 	
 	//metodo pra receber categoria em json e inseri-la no banco
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){//@RequestBody pra construir a categoria através do json //@Valid pra q o objDTO seja validado antes
 		Categoria obj = service.fromDTO(objDTO);//converte o CategoriaDTO pra Categoria
@@ -53,6 +55,7 @@ public class CategoriaResource {
 	}
 	
 	//pra fazer alteração
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)//pathvariable abaixo pq tmbm vai receber parametro da url
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){//@RequestBody pra construir a categoria através do json passado, @Valid pra validar o objDTO
 		Categoria obj = service.fromDTO(objDTO);//converte
@@ -64,6 +67,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build(); //nocontent = conteudo vazio
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) // DELETE, verbo http
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest

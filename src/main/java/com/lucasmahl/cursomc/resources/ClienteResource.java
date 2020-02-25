@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +67,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build(); //nocontent = conteudo vazio
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) // DELETE, verbo http
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {//PathVariablepq o id da url vai vir pra o da variavel
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
@@ -76,6 +78,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build(); //se deletou com sucesso, retorna a resposta, q deu ok, sem conteúdo
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET) // GET, verbo http
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		//ResponseEntity tipo do spring, q encapsula varias informações de um http p/ um serviço rest
@@ -87,6 +90,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/page", method = RequestMethod.GET) // GET, verbo http //value = http://localhost:8080/clientes/page
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0")Integer page,//RequestParam pq é um parametro opcional
